@@ -23,8 +23,10 @@ jobs:
 
       - name: Install, build, and upload your site
         uses: withastro/action@v3
+        with:
+          package-manager: npm@10
         # By default this action:
-        # - runs `npm install` (or yarn/pnpm, auto-detected)
+        # - runs `npm install` using the lockfile (package-lock.json)
         # - runs `npm run build`
         # - uploads ./dist as a Pages artifact
 
