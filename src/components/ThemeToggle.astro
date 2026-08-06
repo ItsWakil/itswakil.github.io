@@ -1,0 +1,35 @@
+<button
+  id="theme-toggle"
+  class="theme-toggle"
+  type="button"
+  aria-label="Toggle dark mode"
+>
+  <span id="theme-icon" aria-hidden="true">🌙</span>
+</button>
+
+<script is:inline>
+  (function () {
+    const btn = document.getElementById("theme-toggle");
+    const icon = document.getElementById("theme-icon");
+
+    function syncIcon() {
+      const isDark =
+        document.documentElement.getAttribute("data-theme") === "dark";
+      icon.textContent = isDark ? "☀️" : "🌙";
+      btn.setAttribute(
+        "aria-label",
+        isDark ? "Switch to light mode" : "Switch to dark mode"
+      );
+    }
+
+    syncIcon();
+
+    btn.addEventListener("click", () => {
+      const current = document.documentElement.getAttribute("data-theme");
+      const next = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      syncIcon();
+    });
+  })();
+</script>

@@ -1,0 +1,393 @@
+/* ===================================================================
+   Ocean Breeze / Warm Autumn Glow theme
+   Light mode  = "Summer Ocean Breeze" palette
+   Dark mode   = "Warm Autumn Glow" palette
+   =================================================================== */
+
+:root {
+  /* Summer Ocean Breeze */
+  --strawberry-red: #e63946;
+  --honeydew: #f1faee;
+  --frosted-blue: #a8dadc;
+  --steel-blue: #457b9d;
+  --deep-space-blue: #1d3557;
+
+  /* Light mode role assignments */
+  --color-bg: var(--frosted-blue);
+  --color-surface: var(--honeydew);
+  --color-surface-hover: #e4f4f2;
+  --color-text: var(--deep-space-blue);
+  --color-text-muted: var(--steel-blue);
+  --color-accent: var(--strawberry-red);
+  --color-accent-contrast: #ffffff;
+  --color-border: #8fc9cc;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+
+  --radius: 14px;
+  --max-width: 46rem;
+}
+
+/* Warm Autumn Glow — dark mode */
+:root[data-theme="dark"] {
+  --deep-navy: #003049;
+  --flag-red: #d62828;
+  --princeton-orange: #f77f00;
+  --sunflower-gold: #fcbf49;
+  --vanilla-custard: #eae2b7;
+
+  --color-bg: var(--deep-navy);
+  --color-surface: #073a5c;
+  --color-surface-hover: #0a4468;
+  --color-text: var(--vanilla-custard);
+  --color-text-muted: var(--sunflower-gold);
+  --color-accent: var(--princeton-orange);
+  --color-accent-contrast: #003049;
+  --color-border: #0e4d73;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.65;
+  font-size: 1.0625rem;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 4rem;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-sans);
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: 2rem; margin: 0 0 0.5rem; }
+h2 { font-size: 1.5rem; margin: 2rem 0 0.75rem; }
+h3 { font-size: 1.2rem; margin: 1.5rem 0 0.5rem; }
+
+p { margin: 0 0 1rem; }
+
+a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+  font-weight: 600;
+}
+
+a:hover { opacity: 0.8; }
+
+/* ---------- Header ---------- */
+.site-header {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.75rem 1.25rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.site-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--color-text);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.site-title:hover { opacity: 0.85; }
+
+nav.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+}
+
+nav.site-nav a {
+  color: var(--color-text);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+  padding: 0.3rem 0.1rem;
+  border-bottom: 2px solid transparent;
+}
+
+nav.site-nav a:hover,
+nav.site-nav a[aria-current="page"] {
+  border-bottom-color: var(--color-accent);
+}
+
+/* ---------- Theme toggle ---------- */
+.theme-toggle {
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-radius: 999px;
+  width: 2.35rem;
+  height: 2.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.05rem;
+  line-height: 1;
+  padding: 0;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.theme-toggle:hover { transform: scale(1.06); }
+.theme-toggle:active { transform: scale(0.94); }
+
+/* ---------- Post list ---------- */
+.intro {
+  margin-bottom: 2.25rem;
+}
+
+.intro p {
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+}
+
+.post-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.post-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.4rem;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.post-card:hover {
+  background: var(--color-surface-hover);
+  transform: translateY(-2px);
+}
+
+.post-card a.post-title-link {
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.post-card h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.25rem;
+}
+
+.post-meta {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.post-desc {
+  margin: 0;
+  color: var(--color-text);
+  opacity: 0.9;
+  font-size: 0.98rem;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+
+.tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+}
+
+/* ---------- Single post ---------- */
+.post-header {
+  margin-bottom: 2rem;
+}
+
+.post-header .post-meta {
+  margin-bottom: 0.75rem;
+}
+
+.post-content {
+  font-size: 1.05rem;
+}
+
+.post-content img {
+  max-width: 100%;
+  border-radius: var(--radius);
+}
+
+.post-content pre {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: 1rem;
+  border-radius: var(--radius);
+  overflow-x: auto;
+}
+
+.post-content code {
+  background: var(--color-surface);
+  padding: 0.15rem 0.4rem;
+  border-radius: 5px;
+  font-size: 0.9em;
+}
+
+.post-content pre code {
+  background: none;
+  padding: 0;
+}
+
+.post-content blockquote {
+  border-left: 4px solid var(--color-accent);
+  margin: 1.25rem 0;
+  padding: 0.25rem 0 0.25rem 1rem;
+  color: var(--color-text-muted);
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 2.5rem;
+  font-size: 0.95rem;
+}
+
+/* ---------- About / Contact ---------- */
+.page-content {
+  font-size: 1.05rem;
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.6rem;
+}
+
+/* ---------- Contact form ---------- */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 32rem;
+}
+
+.contact-form label {
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  padding: 0.65rem 0.8rem;
+  border-radius: 10px;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.contact-form button {
+  align-self: flex-start;
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  border: none;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.7rem 1.5rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.contact-form button:hover { opacity: 0.85; }
+.contact-form button:active { transform: scale(0.97); }
+
+.form-status {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.form-status[data-state="success"] { color: #2a9d5c; }
+.form-status[data-state="error"] { color: var(--strawberry-red); }
+
+/* honeypot field — hidden from real users, catches simple bots */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  max-width: var(--max-width);
+  margin: 2rem auto 0;
+  padding: 1.5rem 1.25rem 3rem;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* ---------- Utility ---------- */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 600px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
