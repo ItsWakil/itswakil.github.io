@@ -1,0 +1,51 @@
+---
+title: "How Fortuitous!"
+description: "Reflections on a DA-103 Intro to IT class assignment, why this blog runs on Jekyll, and a couple of cat photos."
+pubDate: 2026-01-29
+tags: ["welcome", "school", "it", "general", "hobbies"]
+heroImage: "/images/blog/how-fortuitous/it.jpg"
+---
+
+## Whats this then?
+
+I was tasked with making a blog and writing a blog post for my **DA-103 Intro to Information Technology class.**
+
+**Hi Professor Kowalski**
+
+I was looking for an excuse to get back into blogging and this seems like a good one.
+
+## Assignment: Write What I think of the class!
+
+Firstly I think that the communication for this class is exceptional. In week one I was a little bit light on details when describing the technology used for some famous pieces of history and within a day I had feedback that I needed to correct that and resubmit. That was wonderful because it was timely and told me what I needed to fix instead of leaving me guessing.
+
+The assignments so far have been informative and also fun. Granted I use Arch Linux *for fun* so my definition of fun might be a little skewed. Learning more about the history of the internet was very enjoyable and I got some new perspective on things like Sputnik-1 which I learned about in the 90s so my information was a little outdated.
+
+The selections of videos to watch and articles to read have been very enjoyable as well. This was one of my favorite things about my Nutrition class from last semester as well.
+
+I also get an opportunity to share articles that I've read recently that apply to the class.
+
+In this course I'm hoping to learn more about the history of the technology we use as well as the future of technology and how we're applying and hope to apply technology to improve the lives of people around the globe.
+
+My favorite class so far and I'm not just saying it because the professor is reading this!
+
+## Yeah okay but what actually is this for the nerds?
+
+This is Jekyll, an open source static site generator written in Ruby and being used as a blog using a modified publicly available free theme from the Jekyll theme gallery.
+
+It is hosted on Github Pages.
+
+## Why Jekyll?
+
+I've entered a kind of minimalism stage of my life where I like to see how much I can accomplish with as little resoruce cost as possible. Solutions like WordPress and Ghost are much heavier in that department, and remotely hosted blog platforms are severely lacking in privacy.
+
+Also I'm a nerd and it's an excuse to learn something new.
+
+## Here, look at my cat.
+
+![Persephone](/images/blog/how-fortuitous/persephone.jpg "Persephone")
+
+This is Persephone.
+
+![Grievance 2025](/images/blog/how-fortuitous/gettogether.jpg "Get Together 2025")
+
+This is the photo I referenced in the assignment document. Quite a few people here in IT!
