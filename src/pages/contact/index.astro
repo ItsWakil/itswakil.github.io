@@ -1,56 +1,55 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+
+// The Web3Forms access key comes from the WEB3FORMS_KEY repository variable
+// (Settings > Secrets and variables > Actions > Variables), passed in by the
+// deploy workflow. The key routes messages to your inbox without revealing
+// your address; it is safe to appear in the page.
+const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? "";
+const ready = accessKey.length > 0;
 ---
 
 <BaseLayout title="Contact" description="Get in touch.">
   <h1>Contact</h1>
   <div class="page-content">
     <p>
-      Have something to say? Fill out the form below — it goes straight to my
+      Have something to say? Fill out the form below. It goes straight to my
       inbox without publishing my email address anywhere on this page.
     </p>
 
-    <form id="contact-form" class="contact-form" novalidate>
-      <!--
-        This form posts to Web3Forms (https://web3forms.com), a free service
-        built for static sites like this one. It relays submissions to your
-        inbox without ever printing your email address in the page's HTML.
+    {!ready && (
+      <p class="form-status" data-state="error">
+        The contact form isn't connected yet. Check back soon.
+      </p>
+    )}
 
-        Setup (2 minutes):
-        1. Go to https://web3forms.com and enter the email you want
-           submissions sent to. You'll get an "access key" back instantly —
-           no account required.
-        2. Paste that access key below in place of "YOUR-WEB3FORMS-ACCESS-KEY".
+    <form id="contact-form" class="contact-form" data-ready={ready ? "true" : "false"} novalidate>
+      <input type="hidden" name="access_key" value={accessKey} />
+      <input type="hidden" name="subject" value="New message from itswakil.github.io" />
+      <input type="hidden" name="from_name" value="WakilBlog contact form" />
 
-        Prefer a different service? Formspree (https://formspree.io) and
-        Getform (https://getform.io) work the same way — just swap the
-        fetch URL and field names in the <script> below.
-      -->
-      <input type="hidden" name="access_key" value="YOUR-WEB3FORMS-ACCESS-KEY" />
-      <input type="hidden" name="subject" value="New message from Ocean Breeze" />
-
-      <!-- Honeypot: real visitors never see or fill this in; bots often do -->
+      <!-- Honeypot: Web3Forms rejects submissions that tick this -->
       <div class="hp-field" aria-hidden="true">
-        <label for="hp">Leave this field empty</label>
-        <input type="text" id="hp" name="hp" tabindex="-1" autocomplete="off" />
+        <label for="botcheck">Leave this unchecked</label>
+        <input type="checkbox" id="botcheck" name="botcheck" tabindex="-1" autocomplete="off" />
       </div>
 
-      <div>
+      <div class="field">
         <label for="name">Name</label>
-        <input type="text" id="name" name="name" required />
+        <input type="text" id="name" name="name" autocomplete="name" required />
       </div>
 
-      <div>
+      <div class="field">
         <label for="email">Your email</label>
-        <input type="email" id="email" name="email" required />
+        <input type="email" id="email" name="email" autocomplete="email" required />
       </div>
 
-      <div>
+      <div class="field">
         <label for="message">Message</label>
-        <textarea id="message" name="message" rows="6" required></textarea>
+        <textarea id="message" name="message" rows="7" required></textarea>
       </div>
 
-      <button type="submit">Send message</button>
+      <button type="submit" disabled={!ready}>Send message</button>
       <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
     </form>
   </div>
@@ -58,54 +57,51 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 <script is:inline>
   (function () {
-    const form = document.getElementById("contact-form");
-    const status = document.getElementById("form-status");
+    var form = document.getElementById("contact-form");
+    var status = document.getElementById("form-status");
+    var button = form.querySelector("button[type=submit]");
 
-    form.addEventListener("submit", async (e) => {
+    function say(text, state) {
+      status.textContent = text;
+      status.dataset.state = state || "";
+    }
+
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
+      if (form.dataset.ready !== "true") return;
 
-      // Honeypot check — if a bot filled this in, silently pretend success
-      if (form.querySelector("#hp").value !== "") {
-        status.textContent = "Thanks! Your message has been sent.";
-        status.dataset.state = "success";
+      if (form.querySelector("#botcheck").checked) {
+        say("Message sent. Thanks!", "success");
         form.reset();
         return;
       }
 
-      const accessKey = form.querySelector('[name="access_key"]').value;
-      if (accessKey === "YOUR-WEB3FORMS-ACCESS-KEY") {
-        status.textContent =
-          "Form isn't connected yet — add your Web3Forms access key in contact/index.astro.";
-        status.dataset.state = "error";
+      if (!form.checkValidity()) {
+        say("Fill in your name, a valid email, and a message.", "error");
+        form.reportValidity();
         return;
       }
 
-      status.textContent = "Sending…";
-      status.dataset.state = "";
-
-      const formData = new FormData(form);
+      button.disabled = true;
+      say("Sending…");
 
       try {
-        const res = await fetch("https://api.web3forms.com/submit", {
+        var res = await fetch("https://api.web3forms.com/submit", {
           method: "POST",
           headers: { Accept: "application/json" },
-          body: formData,
+          body: new FormData(form),
         });
-        const result = await res.json();
-
+        var result = await res.json();
         if (result.success) {
-          status.textContent = "Thanks! Your message has been sent.";
-          status.dataset.state = "success";
+          say("Message sent. Thanks!", "success");
           form.reset();
         } else {
-          status.textContent =
-            "Something went wrong. Please try again in a moment.";
-          status.dataset.state = "error";
+          say("The message didn't go through. Try again in a moment.", "error");
         }
       } catch (err) {
-        status.textContent =
-          "Something went wrong. Please check your connection and try again.";
-        status.dataset.state = "error";
+        say("Couldn't reach the mail service. Check your connection and try again.", "error");
+      } finally {
+        button.disabled = false;
       }
     });
   })();

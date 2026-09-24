@@ -9,26 +9,22 @@ const posts = allPosts.sort(
 );
 ---
 
-<BaseLayout
-  title="Ocean Breeze"
-  description="A quirky little corner of the internet."
->
+<BaseLayout title="WakilBlog" description="A quirky little corner of the internet.">
   <div class="intro">
     <h1>Welcome 👋</h1>
     <p>Thoughts, notes, and whatever else feels worth writing down.</p>
   </div>
 
+  <p class="cmd"><span class="sigil" aria-hidden="true">$</span>ls -t ~/posts</p>
   <ul class="post-list">
-    {
-      posts.map((post) => (
-        <PostCard
-          slug={post.id}
-          title={post.data.title}
-          description={post.data.description}
-          pubDate={post.data.pubDate}
-          tags={post.data.tags}
-        />
-      ))
-    }
+    {posts.map((post) => (
+      <PostCard
+        slug={post.id}
+        title={post.data.title}
+        description={post.data.description}
+        pubDate={post.data.pubDate}
+        tags={post.data.tags}
+      />
+    ))}
   </ul>
 </BaseLayout>

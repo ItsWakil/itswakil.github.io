@@ -1,35 +1,22 @@
-<button
-  id="theme-toggle"
-  class="theme-toggle"
-  type="button"
-  aria-label="Toggle dark mode"
->
-  <span id="theme-icon" aria-hidden="true">🌙</span>
-</button>
+<button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch color scheme">night</button>
 
 <script is:inline>
   (function () {
-    const btn = document.getElementById("theme-toggle");
-    const icon = document.getElementById("theme-icon");
+    var btn = document.getElementById("theme-toggle");
+    var root = document.documentElement;
 
-    function syncIcon() {
-      const isDark =
-        document.documentElement.getAttribute("data-theme") === "dark";
-      icon.textContent = isDark ? "☀️" : "🌙";
-      btn.setAttribute(
-        "aria-label",
-        isDark ? "Switch to light mode" : "Switch to dark mode"
-      );
+    function sync() {
+      var dark = root.getAttribute("data-theme") !== "light";
+      btn.textContent = dark ? "night" : "day";
+      btn.setAttribute("aria-label", dark ? "Switch to Tokyo Night Day" : "Switch to Tokyo Night");
     }
 
-    syncIcon();
-
-    btn.addEventListener("click", () => {
-      const current = document.documentElement.getAttribute("data-theme");
-      const next = current === "dark" ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem("theme", next);
-      syncIcon();
+    sync();
+    btn.addEventListener("click", function () {
+      var next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+      root.setAttribute("data-theme", next);
+      try { localStorage.setItem("theme", next); } catch (e) {}
+      sync();
     });
   })();
 </script>

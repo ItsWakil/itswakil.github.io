@@ -12,29 +12,23 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-
-const formattedDate = post.data.pubDate.toLocaleDateString("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
+const day = (d: Date) => d.toISOString().slice(0, 10);
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
   <article>
-    <div class="post-header">
+    <header class="post-header">
       <h1>{post.data.title}</h1>
-      <p class="post-meta">{formattedDate}</p>
-      {
-        post.data.tags.length > 0 && (
-          <ul class="tag-list">
-            {post.data.tags.map((tag) => (
-              <li class="tag">{tag}</li>
-            ))}
-          </ul>
-        )
-      }
-    </div>
+      <p class="post-meta">
+        <time datetime={post.data.pubDate.toISOString()}>{day(post.data.pubDate)}</time>
+        {post.data.updatedDate && <span>, updated {day(post.data.updatedDate)}</span>}
+      </p>
+      {post.data.tags.length > 0 && (
+        <ul class="tag-list">
+          {post.data.tags.map((tag) => <li class="tag">#{tag}</li>)}
+        </ul>
+      )}
+    </header>
     <div class="post-content">
       <Content />
     </div>

@@ -13,8 +13,8 @@ const {
   description = "A quirky little corner of the internet.",
 } = Astro.props;
 
-const siteTitle = "Ocean Breeze";
-const pageTitle = title === siteTitle ? title : `${title} · ${siteTitle}`;
+const siteTitle = "WakilBlog";
+const pageTitle = title === siteTitle ? title : `${title} | ${siteTitle}`;
 ---
 
 <!doctype html>
@@ -22,29 +22,26 @@ const pageTitle = title === siteTitle ? title : `${title} · ${siteTitle}`;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/fonts/source-serif-4-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
 
-    <!-- Open Graph -->
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
 
-    <!--
-      Inline, render-blocking theme script.
-      Runs before first paint so there's no flash of the wrong theme.
-      Reads a saved preference, falling back to the OS-level preference.
-    -->
+    <!-- Runs before first paint: saved choice, else the OS setting.
+         dark = Tokyo Night, light = Tokyo Night Day -->
     <script is:inline>
       (function () {
-        const saved = localStorage.getItem("theme");
-        const prefersDark = window.matchMedia(
-          "(prefers-color-scheme: dark)"
-        ).matches;
-        const theme = saved || (prefersDark ? "dark" : "light");
-        document.documentElement.setAttribute("data-theme", theme);
+        var saved = null;
+        try { saved = localStorage.getItem("theme"); } catch (e) {}
+        var prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+        document.documentElement.setAttribute("data-theme", saved || (prefersLight ? "light" : "dark"));
       })();
     </script>
   </head>
