@@ -1,0 +1,12 @@
+---
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+---
+
+<div class="cover-fallback" aria-hidden="true">
+  <span class="cf-prompt"><span class="p-host">itswakil</span>:<span class="p-cwd">~/posts</span> $ cat {slug}.md</span>
+  <span class="cf-glyph">&gt;_</span>
+</div>

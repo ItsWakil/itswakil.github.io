@@ -1,0 +1,34 @@
+---
+import { Image } from "astro:assets";
+import TagList from "./TagList.astro";
+import CoverFallback from "./CoverFallback.astro";
+import { day, readingTime, type Post } from "../lib/posts";
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate, tags, heroImage } = post.data;
+const href = `/posts/${post.id}/`;
+---
+
+<li class="tile">
+  <a class="tile-media" href={href} tabindex="-1" aria-hidden="true">
+    {heroImage ? (
+      <Image
+        src={heroImage}
+        alt=""
+        widths={[400, 640, 960]}
+        sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 320px"
+        layout="none"
+      />
+    ) : <CoverFallback slug={post.id} />}
+  </a>
+  <div class="tile-body">
+    <p class="card-meta"><time datetime={pubDate.toISOString()}>{day(pubDate)}</time> · ~{readingTime(post.body)} min</p>
+    <a class="tile-title" href={href}>{title}</a>
+    {description && <p class="tile-desc">{description}</p>}
+    <TagList tags={tags} />
+  </div>
+</li>

@@ -65,6 +65,7 @@
   --font-serif: "Source Serif 4", "Iowan Old Style", Georgia, serif;
   /* fixed width so the mono header/footer line up with the serif body */
   --measure: 39rem;
+  --shell: 62rem;
 
   /* Shiki "css-variables" theme */
   --astro-code-foreground: var(--text);
@@ -121,7 +122,9 @@ body {
   line-height: 1.7;
   font-optical-sizing: auto;
 }
-main, .site-header, .site-footer { width: min(100% - 2.5rem, var(--measure)); margin-inline: auto; }
+/* header and footer span the wide shell; reading pages keep a narrow column */
+main { width: min(100% - 2.5rem, var(--measure)); margin-inline: auto; }
+.site-header, .site-footer, body.wide main { width: min(100% - 2.5rem, var(--shell)); margin-inline: auto; }
 ::selection { background: var(--selection); color: var(--fg); }
 :focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; border-radius: 2px; }
 img, svg, video { max-width: 100%; height: auto; }
@@ -219,6 +222,74 @@ kbd {
 .intro-flag { text-align: center; }
 .cmd { font-family: var(--font-mono); font-size: 0.9rem; color: var(--fg-dim); margin: 2.5rem 0 0.5rem; }
 .cmd .sigil { color: var(--comment); margin-right: 0.6ch; }
+
+/* Home: featured post + grid */
+.card-meta { margin: 0; font-family: var(--font-mono); font-size: 0.78rem; color: var(--fg-dim); font-variant-numeric: tabular-nums; }
+.featured {
+  margin: 0 0 3rem;
+  border: 1px solid var(--bg-hl);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--bg-dark);
+}
+.featured-media, .tile-media { display: block; overflow: hidden; text-decoration: none; }
+.featured-media img { display: block; width: 100%; aspect-ratio: 2.2 / 1; height: auto; object-fit: cover; }
+.featured-media .cover-fallback { aspect-ratio: 2.2 / 1; }
+.featured-body { padding: 1.5rem 1.75rem 1.75rem; }
+.featured-title { margin: 0.4rem 0 0; font-size: clamp(1.6rem, 1.3rem + 1.4vw, 2.2rem); }
+.featured-title a, .tile-title { color: var(--fg); text-decoration: none; }
+.featured-title a:hover, .tile-title:hover { color: var(--accent); }
+.featured-desc { margin: 0.6rem 0 0; color: var(--fg-dim); font-size: 1.15rem; line-height: 1.55; max-width: var(--measure); }
+
+.post-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 3rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+.tile {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--bg-hl);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg-dark);
+}
+.tile-media img { display: block; width: 100%; aspect-ratio: 16 / 10; height: auto; object-fit: cover; }
+.tile-media .cover-fallback { aspect-ratio: 16 / 10; }
+.tile-body { display: flex; flex-direction: column; gap: 0.35rem; padding: 1rem 1.1rem 1.2rem; }
+.tile-title { font-size: 1.15rem; line-height: 1.35; }
+.tile-desc { margin: 0; color: var(--fg-dim); font-size: 0.95rem; line-height: 1.5; }
+.tile .tag-list { margin-top: 0.2rem; }
+.featured-media img, .tile-media img { transition: transform 0.3s ease; }
+.featured:hover .featured-media img, .tile:hover .tile-media img { transform: scale(1.02); }
+@media (prefers-reduced-motion: reduce) { .featured-media img, .tile-media img { transition: none; } }
+
+.cover-fallback {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem 1.2rem;
+  background: var(--hl-low);
+  border-bottom: 1px solid var(--bg-hl);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--comment);
+  overflow: hidden;
+}
+.cf-prompt { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cf-glyph { font-size: 2.4rem; font-weight: 700; line-height: 1; color: var(--accent-3); }
+.featured .cf-glyph { font-size: 4rem; }
+
+@media (max-width: 900px) { .post-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+  .post-grid { grid-template-columns: 1fr; }
+  .featured-body { padding: 1.1rem 1.2rem 1.3rem; }
+}
 
 /* Post list, styled like `ls` output */
 .post-list { list-style: none; padding: 0; margin: 0 0 3rem; }

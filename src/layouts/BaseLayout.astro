@@ -10,6 +10,8 @@ interface Props {
   description?: string;
   image?: ImageMetadata;
   article?: { published: Date; modified?: Date; tags?: string[] };
+  // home page uses the full width for the card grid
+  wide?: boolean;
 }
 
 const {
@@ -17,6 +19,7 @@ const {
   description = "A quirky little corner of the internet.",
   image,
   article,
+  wide = false,
 } = Astro.props;
 
 const siteTitle = "WakilBlog";
@@ -69,7 +72,7 @@ if (image) {
       })();
     </script>
   </head>
-  <body>
+  <body class={wide ? "wide" : undefined}>
     <Header />
     <main>
       <slot />

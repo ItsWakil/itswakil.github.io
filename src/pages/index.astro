@@ -1,19 +1,31 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PostCard from "../components/PostCard.astro";
+import FeaturedPost from "../components/FeaturedPost.astro";
+import PostTile from "../components/PostTile.astro";
 import { getPosts } from "../lib/posts";
 
-const posts = await getPosts();
+const [latest, ...rest] = await getPosts();
 ---
 
-<BaseLayout title="WakilBlog" description="A quirky little corner of the internet.">
+<BaseLayout title="WakilBlog" description="A quirky little corner of the internet." wide>
   <div class="intro">
     <h1 class="intro-flag"><span role="img" aria-label="Pirate flag">🏴‍☠️</span></h1>
     <p>Thoughts, tech, pens, tattoos, cats, books, whatever.</p>
   </div>
 
-  <p class="cmd"><span class="sigil" aria-hidden="true">$</span>ls -t ~/posts</p>
-  <ul class="post-list">
-    {posts.map((post) => <PostCard post={post} />)}
-  </ul>
+  {latest && (
+    <section aria-label="Latest post">
+      <p class="cmd"><span class="sigil" aria-hidden="true">$</span>cat ~/posts/latest</p>
+      <FeaturedPost post={latest} />
+    </section>
+  )}
+
+  {rest.length > 0 && (
+    <section aria-label="Older posts">
+      <p class="cmd"><span class="sigil" aria-hidden="true">$</span>ls -t ~/posts | tail -n +2</p>
+      <ul class="post-grid">
+        {rest.map((post) => <PostTile post={post} />)}
+      </ul>
+    </section>
+  )}
 </BaseLayout>
