@@ -3,6 +3,7 @@ title: "Writing Posts in Markdown"
 description: "A quick reference for the Markdown features this theme supports out of the box — headings, images, tables, task lists, and more."
 pubDate: 2026-01-20
 tags: ["meta", "markdown"]
+draft: true
 ---
 
 Every post in this theme is a Markdown file in `src/content/blog/`. Here's a

@@ -1,25 +1,21 @@
 ---
+import TagList from "./TagList.astro";
+import { day, readingTime, type Post } from "../lib/posts";
+
 interface Props {
-  slug: string;
-  title: string;
-  description: string;
-  pubDate: Date;
-  tags: string[];
+  post: Post;
 }
 
-const { slug, title, description, pubDate, tags } = Astro.props;
-const day = pubDate.toISOString().slice(0, 10);
+const { post } = Astro.props;
+const { title, description, pubDate, tags } = post.data;
 ---
 
 <li class="post-card">
-  <time datetime={pubDate.toISOString()}>{day}</time>
+  <time datetime={pubDate.toISOString()}>{day(pubDate)}</time>
   <div class="post-body">
-    <a class="post-title-link" href={`/posts/${slug}/`}>{title}</a>
+    <a class="post-title-link" href={`/posts/${post.id}/`}>{title}</a>
     {description && <p class="post-desc">{description}</p>}
-    {tags.length > 0 && (
-      <ul class="tag-list">
-        {tags.map((tag) => <li class="tag">#{tag}</li>)}
-      </ul>
-    )}
+    <p class="post-stats">~{readingTime(post.body)} min read</p>
+    <TagList tags={tags} />
   </div>
 </li>

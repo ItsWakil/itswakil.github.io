@@ -1,0 +1,64 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Search" description="Search every post on WakilBlog.">
+  <h1>Search</h1>
+  <form class="search-form" role="search" onsubmit="return false">
+    <label for="q" class="cmd"><span class="sigil" aria-hidden="true">$</span>grep -ri</label>
+    <input id="q" type="search" name="q" autocomplete="off" spellcheck="false" placeholder="pens, arch, cats…" />
+  </form>
+  <p id="search-status" class="search-status" aria-live="polite"></p>
+  <ul id="search-results" class="search-results"></ul>
+</BaseLayout>
+
+<!-- pagefind builds its index after astro build, so this only works on the built site -->
+<script is:inline>
+  (function () {
+    var input = document.getElementById("q");
+    var status = document.getElementById("search-status");
+    var list = document.getElementById("search-results");
+    var pagefind = null;
+
+    function esc(s) {
+      var d = document.createElement("div");
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    async function load() {
+      if (pagefind) return pagefind;
+      var path = "/pagefind/pagefind.js";
+      pagefind = await import(path);
+      await pagefind.init();
+      return pagefind;
+    }
+
+    async function run(q) {
+      var url = new URL(location.href);
+      if (q) url.searchParams.set("q", q); else url.searchParams.delete("q");
+      history.replaceState(null, "", url);
+
+      if (!q.trim()) { list.innerHTML = ""; status.textContent = ""; return; }
+      var pf;
+      try { pf = await load(); } catch (e) {
+        status.textContent = "search index missing (run npm run build, not dev)";
+        return;
+      }
+      var search = await pf.debouncedSearch(q, {}, 200);
+      if (!search) return;
+      var results = await Promise.all(search.results.slice(0, 15).map(function (r) { return r.data(); }));
+      status.textContent = results.length + (results.length === 1 ? " match" : " matches");
+      list.innerHTML = results.map(function (r) {
+        var date = r.meta.date ? '<time>' + esc(r.meta.date) + '</time>' : "";
+        return '<li><a href="' + r.url + '">' + esc(r.meta.title || r.url) + '</a>' + date +
+          '<p>' + r.excerpt + '</p></li>';
+      }).join("");
+    }
+
+    input.addEventListener("input", function () { run(input.value); });
+    var initial = new URLSearchParams(location.search).get("q");
+    if (initial) { input.value = initial; run(initial); }
+    input.focus();
+  })();
+</script>

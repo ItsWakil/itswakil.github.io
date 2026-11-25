@@ -1,6 +1,6 @@
 ---
 title: "Fucking AI"
-description: "The first post on this new little site — why it exists and what's coming."
+description: "I really dislike and distrust AI."
 pubDate: 2026-08-06
 tags: ["meta"]
 ---

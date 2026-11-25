@@ -3,6 +3,7 @@ title: "Hello, World"
 description: "The first post on this new little site — why it exists and what's coming."
 pubDate: 2026-01-15
 tags: ["meta"]
+draft: true
 ---
 
 Welcome to the site! This is the first post, mostly here to prove the theme

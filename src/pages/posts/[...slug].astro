@@ -1,37 +1,108 @@
 ---
-import { getCollection, render } from "astro:content";
+import { render } from "astro:content";
+import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import TagList from "../../components/TagList.astro";
+import { getPosts, day, readingTime, type Post } from "../../lib/posts";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog", ({ data }) => !data.draft);
-  return posts.map((post) => ({
+  const posts = await getPosts();
+  return posts.map((post, i) => ({
     params: { slug: post.id },
-    props: { post },
+    props: { post, newer: posts[i - 1], older: posts[i + 1] },
   }));
 }
 
-const { post } = Astro.props;
+interface Props {
+  post: Post;
+  newer?: Post;
+  older?: Post;
+}
+
+const { post, newer, older } = Astro.props;
+const { title, description, pubDate, updatedDate, tags, heroImage, heroAlt } = post.data;
 const { Content } = await render(post);
-const day = (d: Date) => d.toISOString().slice(0, 10);
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description}>
-  <article>
+<BaseLayout
+  title={title}
+  description={description}
+  image={heroImage}
+  article={{ published: pubDate, modified: updatedDate, tags }}
+>
+  <article data-pagefind-body>
     <header class="post-header">
-      <h1>{post.data.title}</h1>
+      <h1>{title}</h1>
       <p class="post-meta">
-        <time datetime={post.data.pubDate.toISOString()}>{day(post.data.pubDate)}</time>
-        {post.data.updatedDate && <span>, updated {day(post.data.updatedDate)}</span>}
+        <time datetime={pubDate.toISOString()} data-pagefind-meta="date">{day(pubDate)}</time>
+        {updatedDate && <span>, updated {day(updatedDate)}</span>}
+        <span> · ~{readingTime(post.body)} min read</span>
       </p>
-      {post.data.tags.length > 0 && (
-        <ul class="tag-list">
-          {post.data.tags.map((tag) => <li class="tag">#{tag}</li>)}
-        </ul>
-      )}
+      <TagList tags={tags} />
     </header>
+
+    {heroImage && (
+      <Image
+        class="hero"
+        src={heroImage}
+        alt={heroAlt ?? ""}
+        widths={[680, 1360]}
+        sizes="(max-width: 720px) 100vw, 680px"
+        loading="eager"
+        fetchpriority="high"
+      />
+    )}
+
     <div class="post-content">
       <Content />
     </div>
-    <a class="back-link" href="/">&larr; Back to all posts</a>
   </article>
+
+  {(newer || older) && (
+    <nav class="post-nav" aria-label="More posts">
+      {older ? (
+        <a class="older" href={`/posts/${older.id}/`}><span>&larr; older</span>{older.data.title}</a>
+      ) : <span />}
+      {newer && (
+        <a class="newer" href={`/posts/${newer.id}/`}><span>newer &rarr;</span>{newer.data.title}</a>
+      )}
+    </nav>
+  )}
+  <a class="back-link" href="/">&larr; Back to all posts</a>
 </BaseLayout>
+
+<script is:inline>
+  (function () {
+    // the ## prefix on headings becomes a link to that section
+    document.querySelectorAll(".post-content :is(h2, h3)[id]").forEach(function (h) {
+      var a = document.createElement("a");
+      a.className = "heading-anchor";
+      a.href = "#" + h.id;
+      a.textContent = "#".repeat(Number(h.tagName[1])) + " ";
+      a.setAttribute("aria-label", "Link to this section");
+      h.classList.add("has-anchor");
+      h.prepend(a);
+    });
+
+    document.querySelectorAll(".post-content pre").forEach(function (pre) {
+      var wrap = document.createElement("div");
+      wrap.className = "code-block";
+      pre.parentNode.insertBefore(wrap, pre);
+      wrap.appendChild(pre);
+
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "copy-btn";
+      btn.textContent = "copy";
+      btn.addEventListener("click", function () {
+        var code = pre.querySelector("code") || pre;
+        navigator.clipboard.writeText(code.innerText).then(
+          function () { btn.textContent = "copied"; },
+          function () { btn.textContent = "failed"; }
+        );
+        setTimeout(function () { btn.textContent = "copy"; }, 1500);
+      });
+      wrap.appendChild(btn);
+    });
+  })();
+</script>

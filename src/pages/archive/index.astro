@@ -1,0 +1,29 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPosts, day, type Post } from "../../lib/posts";
+
+const posts = await getPosts();
+const years = new Map<number, Post[]>();
+for (const post of posts) {
+  const y = post.data.pubDate.getUTCFullYear();
+  years.set(y, [...(years.get(y) ?? []), post]);
+}
+---
+
+<BaseLayout title="Archive" description="Every post on WakilBlog, by year.">
+  <h1>Archive</h1>
+  <p class="cmd"><span class="sigil" aria-hidden="true">$</span>tree ~/posts</p>
+  {[...years].map(([year, list]) => (
+    <section class="archive-year">
+      <h2>{year}/ <span class="count">{list.length}</span></h2>
+      <ul>
+        {list.map((post) => (
+          <li>
+            <time datetime={post.data.pubDate.toISOString()}>{day(post.data.pubDate).slice(5)}</time>
+            <a href={`/posts/${post.id}/`}>{post.data.title}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</BaseLayout>

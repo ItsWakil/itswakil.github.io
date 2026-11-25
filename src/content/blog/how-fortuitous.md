@@ -1,9 +1,10 @@
 ---
 title: "How Fortuitous!"
-description: "Reflections on a DA-103 Intro to IT class assignment, why this blog runs on Jekyll, and a couple of cat photos."
+description: "Reflections on a DA-103 Intro to IT class assignment, why this blog ran on Jekyll, and a couple of cat photos."
 pubDate: 2026-01-29
 tags: ["welcome", "school", "it", "general", "hobbies"]
-heroImage: "/images/blog/how-fortuitous/it.jpg"
+heroImage: "../../assets/blog/how-fortuitous/it.jpg"
+heroAlt: "Blue network cables running into a lit-up switch rack"
 ---
 
 ## Whats this then?
@@ -30,6 +31,8 @@ My favorite class so far and I'm not just saying it because the professor is rea
 
 ## Yeah okay but what actually is this for the nerds?
 
+*Update: this blog has since moved from Jekyll to Astro.*
+
 This is Jekyll, an open source static site generator written in Ruby and being used as a blog using a modified publicly available free theme from the Jekyll theme gallery.
 
 It is hosted on Github Pages.
@@ -42,10 +45,10 @@ Also I'm a nerd and it's an excuse to learn something new.
 
 ## Here, look at my cat.
 
-![Persephone](/images/blog/how-fortuitous/persephone.jpg "Persephone")
+![Persephone](../../assets/blog/how-fortuitous/persephone.jpg "Persephone")
 
 This is Persephone.
 
-![Grievance 2025](/images/blog/how-fortuitous/gettogether.jpg "Get Together 2025")
+![Grievance 2025](../../assets/blog/how-fortuitous/gettogether.jpg "Get Together 2025")
 
 This is the photo I referenced in the assignment document. Quite a few people here in IT!

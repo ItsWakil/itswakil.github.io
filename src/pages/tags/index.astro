@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPosts, tagCounts, tagSlug } from "../../lib/posts";
+
+const tags = tagCounts(await getPosts());
+---
+
+<BaseLayout title="Tags" description="Every tag on WakilBlog.">
+  <h1>Tags</h1>
+  <p class="cmd"><span class="sigil" aria-hidden="true">$</span>ls ~/tags | wc -l<br /><span class="cmd-out">{tags.length}</span></p>
+  <ul class="tag-index">
+    {tags.map(([tag, count]) => (
+      <li>
+        <a href={`/tags/${tagSlug(tag)}/`}>#{tag}</a>
+        <span class="count">{count} {count === 1 ? "post" : "posts"}</span>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

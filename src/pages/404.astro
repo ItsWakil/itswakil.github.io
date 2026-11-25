@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="404" description="Nothing here.">
+  <div class="not-found">
+    <p class="cmd"><span class="sigil" aria-hidden="true">$</span>cd <span id="missing-path">this-page</span></p>
+    <p class="err">bash: cd: no such file or directory</p>
+    <h1>404</h1>
+    <p>Whatever was here isn't anymore, or never was.</p>
+    <p class="cmd"><span class="sigil" aria-hidden="true">$</span><a href="/">cd ~</a> &nbsp; <a href="/search/">grep -r</a></p>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  document.getElementById("missing-path").textContent = location.pathname;
+</script>

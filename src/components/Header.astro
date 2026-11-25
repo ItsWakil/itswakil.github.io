@@ -7,6 +7,9 @@ const cwd = path === "" ? "~" : `~${path}`;
 
 const links = [
   { href: "/", label: "posts", current: pathname === "/" || pathname.startsWith("/posts/") },
+  { href: "/archive/", label: "archive", current: pathname.startsWith("/archive") },
+  { href: "/tags/", label: "tags", current: pathname.startsWith("/tags") },
+  { href: "/search/", label: "search", current: pathname.startsWith("/search") },
   { href: "/about/", label: "about", current: pathname.startsWith("/about") },
   { href: "/contact/", label: "contact", current: pathname.startsWith("/contact") },
 ];
