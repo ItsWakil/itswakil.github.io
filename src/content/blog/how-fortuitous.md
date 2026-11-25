@@ -5,6 +5,7 @@ pubDate: 2026-01-29
 tags: ["welcome", "school", "it", "general", "hobbies"]
 heroImage: "../../assets/blog/how-fortuitous/it.jpg"
 heroAlt: "Blue network cables running into a lit-up switch rack"
+draft: true
 ---
 
 ## Whats this then?
