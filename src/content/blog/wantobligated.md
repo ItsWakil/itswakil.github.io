@@ -4,6 +4,8 @@ description: "There are only two reasons I do anything: I want to, or I have to.
 pubDate: 2026-11-25T11:43:00-05:00
 tags: ["general", "life"]
 draft: false
+heroImage: "../../assets/blog/wantobligated/wantobligated.jpg"
+heroAlt: "Equations"
 ---
 
 Based on a conversation I had this morning. 
