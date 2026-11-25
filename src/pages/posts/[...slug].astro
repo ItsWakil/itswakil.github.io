@@ -69,6 +69,16 @@ const { Content } = await render(post);
     </nav>
   )}
   <a class="back-link" href="/">&larr; Back to all posts</a>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Image viewer">
+    <figure>
+      <img id="lb-img" alt="" />
+      <figcaption><span id="lb-caption"></span><span id="lb-count" class="lb-count"></span></figcaption>
+    </figure>
+    <button type="button" class="lb-btn lb-prev" id="lb-prev" aria-label="Previous image">&larr;</button>
+    <button type="button" class="lb-btn lb-next" id="lb-next" aria-label="Next image">&rarr;</button>
+    <button type="button" class="lb-btn lb-close" id="lb-close" aria-label="Close">×</button>
+  </dialog>
 </BaseLayout>
 
 <script is:inline>
@@ -83,6 +93,52 @@ const { Content } = await render(post);
       h.classList.add("has-anchor");
       h.prepend(a);
     });
+
+    // images on back-to-back lines share a <p>; CSS turns those into a grid,
+    // this hooks them up to the lightbox
+    var lb = document.getElementById("lightbox");
+    var lbImg = document.getElementById("lb-img");
+    var lbCaption = document.getElementById("lb-caption");
+    var lbCount = document.getElementById("lb-count");
+    var set = [], at = 0;
+
+    function showAt(i) {
+      at = (i + set.length) % set.length;
+      var src = set[at];
+      lbImg.removeAttribute("srcset");
+      if (src.srcset) { lbImg.srcset = src.srcset; lbImg.sizes = "100vw"; }
+      lbImg.src = src.currentSrc || src.src;
+      lbImg.alt = src.alt;
+      lbCaption.textContent = src.alt;
+      lbCount.textContent = (at + 1) + " / " + set.length;
+    }
+
+    document.querySelectorAll(".post-content p").forEach(function (p) {
+      var imgs = Array.prototype.slice.call(p.querySelectorAll(":scope > img"));
+      if (imgs.length < 2) return;
+      p.classList.add("gallery");
+      imgs.forEach(function (img, i) {
+        img.tabIndex = 0;
+        img.setAttribute("role", "button");
+        function open() { set = imgs; showAt(i); lb.showModal(); }
+        img.addEventListener("click", open);
+        img.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); }
+        });
+      });
+    });
+
+    if (lb) {
+      document.getElementById("lb-prev").addEventListener("click", function () { showAt(at - 1); });
+      document.getElementById("lb-next").addEventListener("click", function () { showAt(at + 1); });
+      document.getElementById("lb-close").addEventListener("click", function () { lb.close(); });
+      lb.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowLeft") showAt(at - 1);
+        if (e.key === "ArrowRight") showAt(at + 1);
+      });
+      // a click on the dark backdrop closes it
+      lb.addEventListener("click", function (e) { if (e.target === lb) lb.close(); });
+    }
 
     document.querySelectorAll(".post-content pre").forEach(function (pre) {
       var wrap = document.createElement("div");
