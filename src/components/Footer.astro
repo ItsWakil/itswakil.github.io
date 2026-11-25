@@ -4,5 +4,103 @@ const year = new Date().getFullYear();
 
 <footer class="site-footer">
   <p>&copy; {year} WakilBlog. Built with Astro.</p>
-  <p class="footer-links"><a href="/rss.xml">rss</a> <a href="/sitemap-index.xml">sitemap</a></p>
+  <p class="footer-links">
+    <a href="/rss.xml">rss</a>
+    <a href="/sitemap-index.xml">sitemap</a>
+    <button type="button" class="drum-cat-btn" id="drum-cat-btn" aria-expanded="false" aria-controls="drum-cat" aria-label="Surprise">=^..^=</button>
+  </p>
 </footer>
+
+<div class="drum-cat" id="drum-cat" hidden>
+  <button type="button" class="drum-cat-close" id="drum-cat-close" aria-label="Close">×</button>
+  <pre class="drum-cat-art" id="drum-cat-art" role="img" aria-label="An ASCII cat drumming on two bongos"></pre>
+  <pre class="drum-cat-sound" id="drum-cat-sound" aria-hidden="true"></pre>
+</div>
+
+<script is:inline>
+  // same cat as pens.wakil.ink
+  (function () {
+    var btn = document.getElementById("drum-cat-btn");
+    var box = document.getElementById("drum-cat");
+    if (!btn || !box) return;
+    var art = document.getElementById("drum-cat-art");
+    var sound = document.getElementById("drum-cat-sound");
+
+    var FRAMES = {
+      rest: [
+        "      /\\_/\\     ",
+        "     ( o.o )    ",
+        "   o |     | o  ",
+        "     |     |    ",
+        "  .-----. .-----.",
+        "  |     | |     |",
+        "  '-----' '-----'"
+      ],
+      left: [
+        "      /\\_/\\     ",
+        "     ( >.o )   o",
+        "     |     |  / ",
+        "    /|     |    ",
+        "  .-o---. .-----.",
+        "  |  *  | |     |",
+        "  '-----' '-----'"
+      ],
+      right: [
+        "      /\\_/\\     ",
+        "  o  ( o.< )    ",
+        "   \\ |     |    ",
+        "     |     |\\   ",
+        "  .-----. .---o-.",
+        "  |     | |  *  |",
+        "  '-----' '-----'"
+      ],
+      both: [
+        "      /\\_/\\     ",
+        "     ( >.< )    ",
+        "     |     |    ",
+        "    /|     |\\   ",
+        "  .-o---. .---o-.",
+        "  |  *  | |  *  |",
+        "  '-----' '-----'"
+      ]
+    };
+    // "mew" lined up under whichever bongo was hit
+    var MEW = { rest: " ", left: "    mew", right: "            mew", both: "    mew     mew" };
+    var BEAT = ["left", "rest", "right", "rest", "left", "right", "left", "right", "both", "rest", "rest"];
+    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var timer = null, step = 0, nextHand = "left";
+
+    function show(name) {
+      art.textContent = FRAMES[name].join("\n");
+      sound.textContent = MEW[name];
+    }
+    function play() {
+      show(BEAT[step % BEAT.length]);
+      step += 1;
+    }
+    function open() {
+      box.hidden = false;
+      btn.setAttribute("aria-expanded", "true");
+      step = 0;
+      show("rest");
+      if (!still) timer = setInterval(play, 170);
+    }
+    function close() {
+      box.hidden = true;
+      btn.setAttribute("aria-expanded", "false");
+      clearInterval(timer);
+      timer = null;
+      btn.focus();
+    }
+
+    btn.addEventListener("click", function () { box.hidden ? open() : close(); });
+    document.getElementById("drum-cat-close").addEventListener("click", close);
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !box.hidden) close(); });
+    // clicking the cat sneaks in an extra hit (the only way to drum with reduced motion on)
+    art.addEventListener("click", function () {
+      show(nextHand);
+      nextHand = nextHand === "left" ? "right" : "left";
+      if (still) setTimeout(function () { show("rest"); }, 180);
+    });
+  })();
+</script>

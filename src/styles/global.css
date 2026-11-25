@@ -219,7 +219,9 @@ kbd {
 
 /* Home */
 .intro p { color: var(--fg-dim); }
-.intro-flag { text-align: center; }
+.intro { margin-top: 3rem; }
+.intro-title { margin: 0; font-size: clamp(1.4rem, 1rem + 2vw, 2.2rem); color: var(--fg); }
+.intro-title .cursor { height: 0.9em; }
 .cmd { font-family: var(--font-mono); font-size: 0.9rem; color: var(--fg-dim); margin: 2.5rem 0 0.5rem; }
 .cmd .sigil { color: var(--comment); margin-right: 0.6ch; }
 
@@ -504,3 +506,58 @@ kbd {
 .footer-links { display: flex; gap: 1.25rem; }
 .footer-links a { color: var(--fg-dim); text-decoration: none; }
 .footer-links a:hover { color: var(--fg); }
+
+/* Easter egg: the drumming cat behind the =^..^= in the footer */
+.drum-cat-btn {
+  font: inherit;
+  color: var(--fg-dim);
+  background: none;
+  border: 0;
+  padding: 0.1rem 0.25rem;
+  margin: -0.1rem -0.25rem;
+  cursor: pointer;
+  font-variant-ligatures: none;
+}
+.drum-cat-btn:hover, .drum-cat-btn:focus-visible { color: var(--accent); }
+.drum-cat {
+  position: fixed;
+  left: 50%;
+  bottom: 4.5rem;
+  transform: translateX(-50%);
+  z-index: 50;
+  padding: 1.1rem 1.6rem 0.75rem;
+  background: var(--bg-dark);
+  border: 1px solid var(--gutter);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.35);
+  animation: drum-cat-pop 0.18s ease-out;
+}
+.drum-cat[hidden] { display: none; }
+@keyframes drum-cat-pop { from { opacity: 0; transform: translate(-50%, 12px); } }
+.drum-cat pre {
+  margin: 0;
+  font-variant-ligatures: none;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1.25;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+.drum-cat-art { color: var(--fg); cursor: pointer; user-select: none; -webkit-user-select: none; }
+.drum-cat-sound { margin-top: 0.15rem !important; font-weight: 700; color: var(--accent-2); }
+.drum-cat-close {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--fg-dim);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.drum-cat-close:hover { color: var(--fg); }
+@media (prefers-reduced-motion: reduce) { .drum-cat { animation: none; } }
